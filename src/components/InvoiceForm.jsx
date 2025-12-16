@@ -18,6 +18,36 @@ const InvoiceForm = () => {
     });
   };
 
+  const deleteItem = (index) => {
+    const updatedItems = invoiceData.items.filter((_, i) => i !== index);
+    setInvoiceData((prev) => ({ ...prev, items: updatedItems }));
+  };
+
+  const handleChange = (section, field, value) => {
+    setInvoiceData((prev) => ({
+      ...prev,
+      [section]: {
+        ...prev[section],
+        [field]: value,
+      },
+    }));
+
+    console.log(invoiceData);
+  };
+
+  const handleSameAsBilling = (e) => {
+    if (e.target.checked) {
+      setInvoiceData((prev) => ({
+        ...prev,
+        shipping: { ...prev.billing },
+      }));
+    } else {
+      setInvoiceData((prev) => ({
+        ...prev,
+        shipping: { name: "", phone: "", address: "" },
+      }));
+    }
+  };
   // --- Reusable Styling Classes ---
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
   const inputClass =
@@ -35,9 +65,30 @@ const InvoiceForm = () => {
           <div className="flex flex-col justify-end">
             <h5 className={sectionTitleClass}>From (Company Info)</h5>
             <div className="space-y-3">
-              <input className={inputClass} placeholder="Company Name" />
-              <input className={inputClass} placeholder="Company Phone No" />
-              <input className={inputClass} placeholder="Company Address" />
+              <input
+                className={inputClass}
+                onChange={(e) =>
+                  handleChange("company", "name", e.target.value)
+                }
+                value={invoiceData.company.name}
+                placeholder="Company Name"
+              />
+              <input
+                className={inputClass}
+                placeholder="Company Phone No"
+                onChange={(e) =>
+                  handleChange("company", "number", e.target.value)
+                }
+                value={invoiceData.company.number}
+              />
+              <input
+                className={inputClass}
+                placeholder="Company Address"
+                onChange={(e) =>
+                  handleChange("company", "address", e.target.value)
+                }
+                value={invoiceData.company.address}
+              />
             </div>
           </div>
           {/* Company Logo */}
@@ -77,11 +128,25 @@ const InvoiceForm = () => {
             <div className="space-y-3">
               <div>
                 <label className={labelClass}>Client Name</label>
-                <input className={inputClass} placeholder="Client Name" />
+                <input
+                  className={inputClass}
+                  placeholder="Client Name"
+                  value={invoiceData.billing.name}
+                  onChange={(e) =>
+                    handleChange("billing", "name", e.target.value)
+                  }
+                />
               </div>
               <div>
                 <label className={labelClass}>Phone Number</label>
-                <input className={inputClass} placeholder="Client Phone No" />
+                <input
+                  className={inputClass}
+                  placeholder="Client Phone No"
+                  value={invoiceData.billing.phone}
+                  onChange={(e) =>
+                    handleChange("billing", "phone", e.target.value)
+                  }
+                />
               </div>
               <div>
                 <label className={labelClass}>Billing Address</label>
@@ -89,6 +154,10 @@ const InvoiceForm = () => {
                   className={inputClass}
                   rows="2"
                   placeholder="Client Address"
+                  value={invoiceData.billing.address}
+                  onChange={(e) =>
+                    handleChange("billing", "address", e.target.value)
+                  }
                 />
               </div>
             </div>
@@ -104,6 +173,7 @@ const InvoiceForm = () => {
                 <input
                   type="checkbox"
                   id="sameAsBillTo"
+                  onChange={handleSameAsBilling}
                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <label
@@ -118,11 +188,25 @@ const InvoiceForm = () => {
             <div className="space-y-3">
               <div>
                 <label className={labelClass}>Recipient Name</label>
-                <input className={inputClass} placeholder="Name" />
+                <input
+                  className={inputClass}
+                  placeholder="Name"
+                  value={invoiceData.shipping.name}
+                  onChange={(e) =>
+                    handleChange("shipping", "name", e.target.value)
+                  }
+                />
               </div>
               <div>
                 <label className={labelClass}>Phone Number</label>
-                <input className={inputClass} placeholder="Phone No" />
+                <input
+                  className={inputClass}
+                  placeholder="Phone No"
+                  value={invoiceData.shipping.phone}
+                  onChange={(e) =>
+                    handleChange("shipping", "phone", e.target.value)
+                  }
+                />
               </div>
               <div>
                 <label className={labelClass}>Shipping Address</label>
@@ -130,6 +214,10 @@ const InvoiceForm = () => {
                   className={inputClass}
                   rows="2"
                   placeholder="Shipping Address"
+                  value={invoiceData.shipping.address}
+                  onChange={(e) =>
+                    handleChange("shipping", "address", e.target.value)
+                  }
                 />
               </div>
             </div>
@@ -149,16 +237,34 @@ const InvoiceForm = () => {
                 <input
                   className={`${inputClass} pl-7 font-mono`}
                   placeholder="INV-001"
+                  value={invoiceData.invoice.number}
+                  onChange={(e) =>
+                    handleChange("invoice", "number", e.target.value)
+                  }
                 />
               </div>
             </div>
             <div>
               <label className={labelClass}>Issued Date</label>
-              <input type="date" className={inputClass} />
+              <input
+                type="date"
+                className={inputClass}
+                value={invoiceData.invoice.date}
+                onChange={(e) =>
+                  handleChange("invoice", "date", e.target.value)
+                }
+              />
             </div>
             <div>
               <label className={labelClass}>Due Date</label>
-              <input type="date" className={inputClass} />
+              <input
+                type="date"
+                className={inputClass}
+                value={invoiceData.invoice.dueDate}
+                onChange={(e) =>
+                  handleChange("invoice", "dueDate", e.target.value)
+                }
+              />
             </div>
           </div>
         </div>
@@ -227,7 +333,10 @@ const InvoiceForm = () => {
                     />
                   </div>
                   {invoiceData.items.length > 1 && (
-                    <button className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition">
+                    <button
+                      className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition"
+                      onClick={() => deleteItem(index)}
+                    >
                       <Trash2 size={18} />
                     </button>
                   )}

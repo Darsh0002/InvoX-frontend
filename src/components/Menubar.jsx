@@ -1,8 +1,10 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Menubar = () => {
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const scrollToTop = () => {
     scroll.scrollToTop({
       duration: 500,
@@ -109,7 +111,10 @@ const Menubar = () => {
 
             {/* Buttons */}
             <li>
-              <button className="w-full md:w-auto bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-200">
+              <button
+                className="w-full md:w-auto bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-200"
+                onClick={() => navigate("/generate")}
+              >
                 Generate
               </button>
             </li>
