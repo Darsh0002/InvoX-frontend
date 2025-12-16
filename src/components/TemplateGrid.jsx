@@ -1,37 +1,17 @@
 import React, { useState } from "react";
 import { Check, Crown, Eye, X } from "lucide-react";
 
-// Import your actual components
-import Template1 from "./Template1.jsx";
-import Template2 from "./Template2.jsx";
-import Template3 from "./Template3.jsx";
-
 // Import your data
 import { templates, proTemplates } from "../assets/assets.js";
 
-const TemplateGrid = () => {
+const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
   const [selectedTemplate, setSelectedTemplate] = useState(1);
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   // Helper to merge lists
   const allTemplates = [
     ...templates.map((t) => ({ ...t, isPro: false })),
     ...proTemplates.map((t) => ({ ...t, isPro: true })),
   ];
-
-  // Function to determine which component to render in the Preview Modal
-  const renderTemplateComponent = (id) => {
-    switch (id) {
-      case 1:
-        return <Template1 />;
-      case 2:
-        return <Template2 />;
-      case 3:
-        return <Template3 />;
-      default:
-        return <div className="p-10 text-center">Template Not Found</div>;
-    }
-  };
 
   return (
     <div className="space-y-8">
@@ -52,7 +32,10 @@ const TemplateGrid = () => {
             return (
               <div
                 key={id}
-                onClick={() => setSelectedTemplate(id)}
+                onClick={() => {
+                  setSelectedTemplate(id);
+                  onTemplateClick(id);
+                }}
                 // Added 'group' for hover effects on child elements
                 // Added change in border color on hover
                 className={`relative group cursor-pointer rounded-xl transition-all duration-300 bg-white border ${
@@ -117,59 +100,13 @@ const TemplateGrid = () => {
       {/* Action Buttons */}
       <div className="text-center">
         <button
-          onClick={() => setIsPreviewOpen(true)}
+          onClick={onPreviewClick}
           className="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-all font-medium shadow-md hover:shadow-lg transform active:scale-95"
         >
           <Eye size={16} />
           Preview Selection
         </button>
       </div>
-
-      {/* --- PREVIEW MODAL (Unchanged functional logic) --- */}
-      {isPreviewOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-gray-50">
-              <div>
-                <h3 className="font-semibold text-gray-800">
-                  Template Preview
-                </h3>
-              </div>
-              <button
-                onClick={() => setIsPreviewOpen(false)}
-                className="p-1.5 hover:bg-gray-200 rounded-full transition-colors text-gray-500"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Modal Content (Scrollable) */}
-            <div className="flex-1 overflow-y-auto bg-gray-100/50 p-6 flex justify-center">
-              {/* This container simulates an A4 paper width on desktop, scaled down slightly for modal viewing */}
-              <div className="bg-white shadow-xl min-h-150 w-full max-w-[210mm] origin-top transform scale-[0.85] md:scale-100 transition-transform border border-gray-200">
-                {renderTemplateComponent(selectedTemplate)}
-              </div>
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-3 border-t border-gray-100 bg-white flex justify-end gap-3">
-              <button
-                onClick={() => setIsPreviewOpen(false)}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => setIsPreviewOpen(false)}
-                className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-sm"
-              >
-                Use This Template
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

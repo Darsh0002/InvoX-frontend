@@ -1,5 +1,5 @@
 import { Trash2, Plus } from "lucide-react";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AppContext } from "../context/AppContext";
 
 const InvoiceForm = () => {
@@ -31,8 +31,6 @@ const InvoiceForm = () => {
         [field]: value,
       },
     }));
-
-    console.log(invoiceData);
   };
 
   const handleSameAsBilling = (e) => {
@@ -48,6 +46,60 @@ const InvoiceForm = () => {
       }));
     }
   };
+
+  const handleItemChange = (index, field, value) => {
+    const items = [...invoiceData.items];
+    items[index][field] = value;
+    if (field === "qty" || field === "amount") {
+      const qty = parseFloat(items[index].qty) || 0;
+      const amount = parseFloat(items[index].amount) || 0;
+      items[index].total = qty * amount;
+    }
+    setInvoiceData((prev) => ({ ...prev, items }));
+  };
+
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setInvoiceData((prev) => ({
+          ...prev,
+          logo: reader.result,
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const calculateTotals = () => {
+    const subtotal = invoiceData.items.reduce(
+      (sum, item) => sum + (parseFloat(item.total) || 0),
+      0
+    );
+
+    const taxRate = parseFloat(invoiceData.tax) || 0;
+    const taxAmount = (subtotal * taxRate) / 100;
+    const grandTotal = subtotal + taxAmount;
+
+    return { subtotal, taxAmount, grandTotal };
+  };
+
+  const { subtotal, taxAmount, grandTotal } = calculateTotals();
+
+  useEffect(() => {
+    if (!invoiceData.invoice.number) {
+      const randomNumber = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
+      setInvoiceData((prev) => ({
+        ...prev,
+        invoice: {
+          ...prev.invoice,
+          number: randomNumber,
+        },
+      }));
+    }
+  }, []);
+
   // --- Reusable Styling Classes ---
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
   const inputClass =
@@ -101,7 +153,11 @@ const InvoiceForm = () => {
               >
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   <img
-                    src="https://cdn-icons-png.flaticon.com/512/126/126477.png"
+                    src={
+                      invoiceData.logo
+                        ? invoiceData.logo
+                        : "https://cdn-icons-png.flaticon.com/512/126/126477.png"
+                    }
                     alt="Upload"
                     className="w-8 h-8 opacity-40 mb-2"
                   />
@@ -112,6 +168,7 @@ const InvoiceForm = () => {
                   id="image"
                   accept="image/*"
                   className="hidden"
+                  onChange={handleLogoUpload}
                 />
               </label>
             </div>
@@ -236,7 +293,6 @@ const InvoiceForm = () => {
                 </div>
                 <input
                   className={`${inputClass} pl-7 font-mono`}
-                  placeholder="INV-001"
                   value={invoiceData.invoice.number}
                   onChange={(e) =>
                     handleChange("invoice", "number", e.target.value)
@@ -293,29 +349,49 @@ const InvoiceForm = () => {
                     type="text"
                     className={inputClass}
                     placeholder="Item Name"
+                    value={item.name}
+                    onChange={(e) =>
+                      handleItemChange(index, "name", e.target.value)
+                    }
                   />
                   <textarea
                     className={`${inputClass} text-xs`}
                     rows="1"
                     placeholder="Item Description (Optional)"
+                    value={item.description}
+                    onChange={(e) =>
+                      handleItemChange(index, "description", e.target.value)
+                    }
                   />
                 </div>
 
                 {/* Quantity */}
                 <div className="col-span-1 md:col-span-2">
                   <label className="md:hidden text-xs text-gray-500">Qty</label>
-                  <input type="number" className={inputClass} placeholder="0" />
+                  <input
+                    type="number"
+                    className={inputClass}
+                    placeholder="0"
+                    value={item.qty}
+                    onChange={(e) =>
+                      handleItemChange(index, "qty", e.target.value)
+                    }
+                  />
                 </div>
 
                 {/* Price */}
                 <div className="col-span-1 md:col-span-2">
                   <label className="md:hidden text-xs text-gray-500">
-                    Price
+                    Amount
                   </label>
                   <input
                     type="number"
                     className={inputClass}
                     placeholder="0.00"
+                    value={item.amount}
+                    onChange={(e) =>
+                      handleItemChange(index, "amount", e.target.value)
+                    }
                   />
                 </div>
 
@@ -329,6 +405,7 @@ const InvoiceForm = () => {
                       type="number"
                       className={`${inputClass} bg-gray-100 cursor-not-allowed`}
                       placeholder="0.00"
+                      value={item.total}
                       readOnly
                     />
                   </div>
@@ -362,18 +439,36 @@ const InvoiceForm = () => {
             <div className="space-y-4">
               <div>
                 <label className={labelClass}>Account Holder Name</label>
-                <input className={inputClass} placeholder="e.g. John Doe" />
+                <input
+                  className={inputClass}
+                  placeholder="e.g. John Doe"
+                  value={invoiceData.account.holderName}
+                  onChange={(e) =>
+                    handleChange("account", "holderName", e.target.value)
+                  }
+                />
               </div>
               <div>
-                <label className={labelClass}>Account Number / IBAN</label>
+                <label className={labelClass}>Account Number</label>
                 <input
                   className={`${inputClass} font-mono`}
                   placeholder="XXXX XXXX XXXX"
+                  value={invoiceData.account.number}
+                  onChange={(e) =>
+                    handleChange("account", "number", e.target.value)
+                  }
                 />
               </div>
               <div>
                 <label className={labelClass}>Bank Name</label>
-                <input className={inputClass} placeholder="e.g. Chase Bank" />
+                <input
+                  className={inputClass}
+                  placeholder="e.g. Chase Bank"
+                  value={invoiceData.account.bankName}
+                  onChange={(e) =>
+                    handleChange("account", "bankName", e.target.value)
+                  }
+                />
               </div>
             </div>
           </div>
@@ -382,31 +477,44 @@ const InvoiceForm = () => {
           <div className="flex flex-col justify-center space-y-3">
             <div className="flex justify-between items-center p-2 border-b border-gray-100">
               <span className="text-gray-600">Subtotal</span>
-              <span className="font-medium text-gray-900">$1000.00</span>
+              <span className="font-medium text-gray-900">
+                ₹{subtotal.toFixed(2)}
+              </span>
             </div>
 
             <div className="flex justify-between items-center p-2 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">Tax</span>
+                <span className="text-gray-600">Tax Rate</span>
                 <div className="relative w-16">
                   <input
                     type="number"
-                    className="w-full px-2 py-1 text-xs bg-white border border-gray-300 rounded text-right focus:outline-none focus:border-blue-500"
+                    className="w-full px-2 py-1 text-xs bg-white border border-gray-300 rounded text-left focus:outline-none focus:border-blue-500"
                     placeholder="0"
+                    value={invoiceData.tax}
+                    onChange={(e) =>
+                      setInvoiceData((prev) => ({
+                        ...prev,
+                        tax: e.target.value,
+                      }))
+                    }
                   />
                   <span className="absolute right-6 top-1 text-xs text-gray-400 pointer-events-none">
                     %
                   </span>
                 </div>
               </div>
-              <span className="font-medium text-gray-900">$100.00</span>
+              <span className="font-medium text-gray-900">
+                ₹{taxAmount.toFixed(2)}
+              </span>
             </div>
 
             <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
               <span className="text-lg font-bold text-blue-900">
                 Grand Total
               </span>
-              <span className="text-lg font-bold text-blue-900">$1100.00</span>
+              <span className="text-lg font-bold text-blue-900">
+                ₹{grandTotal.toFixed(2)}
+              </span>
             </div>
           </div>
         </div>
@@ -417,6 +525,10 @@ const InvoiceForm = () => {
           <textarea
             className={inputClass}
             rows="3"
+            value={invoiceData.notes}
+            onChange={(e) =>
+              setInvoiceData((prev) => ({ ...prev, notes: e.target.value }))
+            }
             placeholder="Please include any payment terms, thank you notes, or additional instructions here..."
           />
         </div>

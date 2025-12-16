@@ -1,12 +1,34 @@
 import { Pencil } from "lucide-react";
 import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { AppContext } from "../context/AppContext";
 import InvoiceForm from "../components/InvoiceForm";
 import TemplateGrid from "../components/TemplateGrid";
+import toast from "react-hot-toast";
 
 const MainPage = () => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
-  const { invoiceTitle, setInvoiceTitle } = useContext(AppContext);
+  const navigate = useNavigate();
+  const {
+    invoiceTitle,
+    setInvoiceTitle,
+    invoiceData,
+    setInvoiceData,
+    setSelectedTemplate,
+  } = useContext(AppContext);
+
+  const handleTemplateClick = (templateId) => {
+    setSelectedTemplate(templateId);
+  };
+
+  const handlePreviewClick = () => {
+    const hasInvalidItems = invoiceData.items.some((item) => !item.name || !item.qty || !item.amount);
+    if (hasInvalidItems) {
+      toast.error("Please fill all details before previewing the template.");
+      return;
+    }
+    navigate('/preview');
+  };
 
   return (
     <div className="min-h-screen bg-linear-to-br from-blue-50 via-white to-indigo-50 py-8 px-20">
@@ -19,7 +41,13 @@ const MainPage = () => {
                 <input
                   type="text"
                   value={invoiceTitle}
-                  onChange={(e) => setInvoiceTitle(e.target.value)}
+                  onChange={(e) => {
+                    setInvoiceTitle(e.target.value);
+                    setInvoiceData((prev) => ({
+                      ...prev,
+                      title: e.target.value,
+                    }));
+                  }}
                   onBlur={() => setIsEditingTitle(false)}
                   className="text-3xl font-bold text-gray-800 bg-transparent border-b-2 border-blue-500 focus:outline-none focus:border-blue-600 transition-colors"
                   autoFocus
@@ -64,7 +92,7 @@ const MainPage = () => {
                 <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
                 Choose Template
               </h2>
-              <TemplateGrid />
+              <TemplateGrid onTemplateClick={handleTemplateClick} onPreviewClick={handlePreviewClick} />
             </div>
           </div>
         </div>

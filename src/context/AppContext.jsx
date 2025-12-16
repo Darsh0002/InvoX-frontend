@@ -24,9 +24,9 @@ export const initialInvoiceData = {
   },
 
   account: {
-    name: "",
+    holderName: "",
     number: "",
-    ifsccode: "",
+    bankName: "",
   },
 
   company: {
