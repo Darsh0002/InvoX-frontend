@@ -1,0 +1,285 @@
+import { Trash2, Plus } from "lucide-react";
+import React from "react";
+
+const InvoiceForm = () => {
+  // --- Reusable Styling Classes ---
+  const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+  const inputClass =
+    "w-full px-3 py-2 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-all duration-200 placeholder-gray-400 shadow-sm";
+  const sectionTitleClass =
+    "text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 border-b pb-1";
+
+  return (
+    <div className="space-y-6">
+      {/* Main Container */}
+      <div className="bg-white shadow-xl rounded-lg w-full p-6 border border-gray-200">
+        {/* --- Header Section --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* Company Info */}
+          <div className="flex flex-col justify-end">
+            <h5 className={sectionTitleClass}>From (Company Info)</h5>
+            <div className="space-y-3">
+              <input className={inputClass} placeholder="Company Name" />
+              <input className={inputClass} placeholder="Company Phone No" />
+              <input className={inputClass} placeholder="Company Address" />
+            </div>
+          </div>
+          {/* Company Logo */}
+          <div className="flex flex-col">
+            <h5 className={sectionTitleClass}>Company Logo</h5>
+            <div className="mt-1">
+              <label
+                htmlFor="image"
+                className="flex flex-col items-center justify-center w-32 h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 hover:border-blue-400 transition-all"
+              >
+                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <img
+                    src="https://cdn-icons-png.flaticon.com/512/126/126477.png"
+                    alt="Upload"
+                    className="w-8 h-8 opacity-40 mb-2"
+                  />
+                  <p className="text-xs text-gray-500">Click to upload</p>
+                </div>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  className="hidden"
+                />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <hr className="border-gray-200 my-6" />
+
+        {/* --- Client & Shipping Section --- */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          {/* Bill To */}
+          <div>
+            <h5 className={sectionTitleClass}>Bill To</h5>
+            <div className="space-y-3">
+              <div>
+                <label className={labelClass}>Client Name</label>
+                <input className={inputClass} placeholder="Client Name" />
+              </div>
+              <div>
+                <label className={labelClass}>Phone Number</label>
+                <input className={inputClass} placeholder="Client Phone No" />
+              </div>
+              <div>
+                <label className={labelClass}>Billing Address</label>
+                <textarea
+                  className={inputClass}
+                  rows="2"
+                  placeholder="Client Address"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Ship To */}
+          <div>
+            <div className="flex justify-between items-center mb-3 border-b pb-1">
+              <h5 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-0 border-none">
+                Ship To
+              </h5>
+              <div className="flex items-center">
+                <input
+                  type="checkbox"
+                  id="sameAsBillTo"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                />
+                <label
+                  htmlFor="sameAsBillTo"
+                  className="ml-2 text-xs text-gray-600 cursor-pointer select-none"
+                >
+                  Same as Billing
+                </label>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div>
+                <label className={labelClass}>Recipient Name</label>
+                <input className={inputClass} placeholder="Name" />
+              </div>
+              <div>
+                <label className={labelClass}>Phone Number</label>
+                <input className={inputClass} placeholder="Phone No" />
+              </div>
+              <div>
+                <label className={labelClass}>Shipping Address</label>
+                <textarea
+                  className={inputClass}
+                  rows="2"
+                  placeholder="Shipping Address"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* --- Invoice Info --- */}
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
+          <h5 className="font-semibold text-gray-700 mb-4">Invoice Details</h5>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+              <label className={labelClass}>Invoice Number</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="text-gray-500 text-sm">#</span>
+                </div>
+                <input
+                  className={`${inputClass} pl-7 font-mono`}
+                  placeholder="INV-001"
+                />
+              </div>
+            </div>
+            <div>
+              <label className={labelClass}>Issued Date</label>
+              <input type="date" className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Due Date</label>
+              <input type="date" className={inputClass} />
+            </div>
+          </div>
+        </div>
+
+        {/* --- Item Details --- */}
+        <div className="mb-8">
+          <h5 className={sectionTitleClass}>Item Details</h5>
+
+          {/* Table Header (Hidden on Mobile) */}
+          <div className="hidden md:grid grid-cols-12 gap-4 mb-2 text-xs font-medium text-gray-500 uppercase">
+            <div className="col-span-6">Item Description</div>
+            <div className="col-span-2">Quantity</div>
+            <div className="col-span-2">Price</div>
+            <div className="col-span-2">Total</div>
+          </div>
+
+          {/* Item Row */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start border-b border-gray-100 pb-4 mb-4">
+            {/* Item Name & Description */}
+            <div className="col-span-1 md:col-span-6 space-y-2">
+              <input
+                type="text"
+                className={inputClass}
+                placeholder="Item Name"
+              />
+              <textarea
+                className={`${inputClass} text-xs`}
+                rows="1"
+                placeholder="Item Description (Optional)"
+              />
+            </div>
+
+            {/* Quantity */}
+            <div className="col-span-1 md:col-span-2">
+              <label className="md:hidden text-xs text-gray-500">Qty</label>
+              <input type="number" className={inputClass} placeholder="0" />
+            </div>
+
+            {/* Price */}
+            <div className="col-span-1 md:col-span-2">
+              <label className="md:hidden text-xs text-gray-500">Price</label>
+              <input type="number" className={inputClass} placeholder="0.00" />
+            </div>
+
+            {/* Total & Delete */}
+            <div className="col-span-1 md:col-span-2 flex items-center gap-2">
+              <div className="flex-1">
+                <label className="md:hidden text-xs text-gray-500">Total</label>
+                <input
+                  type="number"
+                  className={`${inputClass} bg-gray-100 cursor-not-allowed`}
+                  placeholder="0.00"
+                  readOnly
+                />
+              </div>
+              <button className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition">
+                <Trash2 size={18} />
+              </button>
+            </div>
+          </div>
+
+          <button className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition">
+            <Plus size={16} /> Add New Item
+          </button>
+        </div>
+
+        {/* --- Bank & Totals Section --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+          {/* Bank Account Details (Left Side) */}
+          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 h-fit">
+            <h5 className="font-semibold text-gray-700 mb-4">
+              Bank Account Details
+            </h5>
+            <div className="space-y-4">
+              <div>
+                <label className={labelClass}>Account Holder Name</label>
+                <input className={inputClass} placeholder="e.g. John Doe" />
+              </div>
+              <div>
+                <label className={labelClass}>Account Number / IBAN</label>
+                <input
+                  className={`${inputClass} font-mono`}
+                  placeholder="XXXX XXXX XXXX"
+                />
+              </div>
+              <div>
+                <label className={labelClass}>Bank Name</label>
+                <input className={inputClass} placeholder="e.g. Chase Bank" />
+              </div>
+            </div>
+          </div>
+
+          {/* Totals (Right Side) */}
+          <div className="flex flex-col justify-center space-y-3">
+            <div className="flex justify-between items-center p-2 border-b border-gray-100">
+              <span className="text-gray-600">Subtotal</span>
+              <span className="font-medium text-gray-900">$1000.00</span>
+            </div>
+
+            <div className="flex justify-between items-center p-2 border-b border-gray-100">
+              <div className="flex items-center gap-2">
+                <span className="text-gray-600">Tax</span>
+                <div className="relative w-16">
+                  <input
+                    type="number"
+                    className="w-full px-2 py-1 text-xs bg-white border border-gray-300 rounded text-right focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                  />
+                  <span className="absolute right-6 top-1 text-xs text-gray-400 pointer-events-none">
+                    %
+                  </span>
+                </div>
+              </div>
+              <span className="font-medium text-gray-900">$100.00</span>
+            </div>
+
+            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
+              <span className="text-lg font-bold text-blue-900">
+                Grand Total
+              </span>
+              <span className="text-lg font-bold text-blue-900">$1100.00</span>
+            </div>
+          </div>
+        </div>
+
+        {/* --- Notes --- */}
+        <div>
+          <h5 className={sectionTitleClass}>Notes & Terms</h5>
+          <textarea
+            className={inputClass}
+            rows="3"
+            placeholder="Please include any payment terms, thank you notes, or additional instructions here..."
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InvoiceForm;

@@ -259,7 +259,7 @@ const StepCard = ({ number, color, title, desc }) => (
 
 const ListItem = ({ text }) => (
   <li className="flex items-center gap-3 text-gray-700">
-    <CheckCircle className="h-5 w-5 text-blue-500 flex-shrink-0" />
+    <CheckCircle className="h-5 w-5 text-blue-500 shrink-0" />
     <span>{text}</span>
   </li>
 );
