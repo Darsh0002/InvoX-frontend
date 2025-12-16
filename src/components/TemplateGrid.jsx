@@ -78,7 +78,7 @@ const TemplateGrid = () => {
 
                 {/* Image Container (A4 Aspect Ratio) - Reduced padding */}
                 <div className="p-2">
-                  <div className="aspect-[210/297] overflow-hidden rounded-lg bg-gray-100 relative border border-gray-100">
+                  <div className="aspect-210/297 overflow-hidden rounded-lg bg-gray-100 relative border border-gray-100">
                     {/* Image */}
                     <img
                       src={image}
@@ -147,7 +147,7 @@ const TemplateGrid = () => {
             {/* Modal Content (Scrollable) */}
             <div className="flex-1 overflow-y-auto bg-gray-100/50 p-6 flex justify-center">
               {/* This container simulates an A4 paper width on desktop, scaled down slightly for modal viewing */}
-              <div className="bg-white shadow-xl min-h-[600px] w-full max-w-[210mm] origin-top transform scale-[0.85] md:scale-100 transition-transform border border-gray-200">
+              <div className="bg-white shadow-xl min-h-150 w-full max-w-[210mm] origin-top transform scale-[0.85] md:scale-100 transition-transform border border-gray-200">
                 {renderTemplateComponent(selectedTemplate)}
               </div>
             </div>

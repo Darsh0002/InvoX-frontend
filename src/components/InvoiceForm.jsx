@@ -1,7 +1,23 @@
 import { Trash2, Plus } from "lucide-react";
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../context/AppContext";
 
 const InvoiceForm = () => {
+  const { invoiceData, setInvoiceData } = useContext(AppContext);
+  const addItem = () => {
+    const newItem = {
+      name: "",
+      qty: "",
+      amount: "",
+      description: "",
+      total: 0,
+    };
+    setInvoiceData({
+      ...invoiceData,
+      items: [...invoiceData.items, newItem],
+    });
+  };
+
   // --- Reusable Styling Classes ---
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
   const inputClass =
@@ -159,52 +175,70 @@ const InvoiceForm = () => {
             <div className="col-span-2">Total</div>
           </div>
 
-          {/* Item Row */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start border-b border-gray-100 pb-4 mb-4">
-            {/* Item Name & Description */}
-            <div className="col-span-1 md:col-span-6 space-y-2">
-              <input
-                type="text"
-                className={inputClass}
-                placeholder="Item Name"
-              />
-              <textarea
-                className={`${inputClass} text-xs`}
-                rows="1"
-                placeholder="Item Description (Optional)"
-              />
-            </div>
+            {invoiceData.items.map((item, index) => (
+              <div
+                key={index}
+                className="col-span-12 md:col-span-12 grid grid-cols-12 gap-4 items-start"
+              >
+                {/* Item Name & Description */}
+                <div className="col-span-1 md:col-span-6 space-y-2">
+                  <input
+                    type="text"
+                    className={inputClass}
+                    placeholder="Item Name"
+                  />
+                  <textarea
+                    className={`${inputClass} text-xs`}
+                    rows="1"
+                    placeholder="Item Description (Optional)"
+                  />
+                </div>
 
-            {/* Quantity */}
-            <div className="col-span-1 md:col-span-2">
-              <label className="md:hidden text-xs text-gray-500">Qty</label>
-              <input type="number" className={inputClass} placeholder="0" />
-            </div>
+                {/* Quantity */}
+                <div className="col-span-1 md:col-span-2">
+                  <label className="md:hidden text-xs text-gray-500">Qty</label>
+                  <input type="number" className={inputClass} placeholder="0" />
+                </div>
 
-            {/* Price */}
-            <div className="col-span-1 md:col-span-2">
-              <label className="md:hidden text-xs text-gray-500">Price</label>
-              <input type="number" className={inputClass} placeholder="0.00" />
-            </div>
+                {/* Price */}
+                <div className="col-span-1 md:col-span-2">
+                  <label className="md:hidden text-xs text-gray-500">
+                    Price
+                  </label>
+                  <input
+                    type="number"
+                    className={inputClass}
+                    placeholder="0.00"
+                  />
+                </div>
 
-            {/* Total & Delete */}
-            <div className="col-span-1 md:col-span-2 flex items-center gap-2">
-              <div className="flex-1">
-                <label className="md:hidden text-xs text-gray-500">Total</label>
-                <input
-                  type="number"
-                  className={`${inputClass} bg-gray-100 cursor-not-allowed`}
-                  placeholder="0.00"
-                  readOnly
-                />
+                {/* Total & Delete */}
+                <div className="col-span-1 md:col-span-2 flex items-center gap-2">
+                  <div className="flex-1">
+                    <label className="md:hidden text-xs text-gray-500">
+                      Total
+                    </label>
+                    <input
+                      type="number"
+                      className={`${inputClass} bg-gray-100 cursor-not-allowed`}
+                      placeholder="0.00"
+                      readOnly
+                    />
+                  </div>
+                  {invoiceData.items.length > 1 && (
+                    <button className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition">
+                      <Trash2 size={18} />
+                    </button>
+                  )}
+                </div>
               </div>
-              <button className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition">
-                <Trash2 size={18} />
-              </button>
-            </div>
+            ))}
           </div>
-
-          <button className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition">
+          <button
+            className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition"
+            onClick={addItem}
+          >
             <Plus size={16} /> Add New Item
           </button>
         </div>
