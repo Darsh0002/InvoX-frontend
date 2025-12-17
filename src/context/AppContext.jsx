@@ -1,56 +1,7 @@
 import React, { createContext, useState } from "react";
+import { initialInvoiceData } from "../constants.js";
 
 export const AppContext = createContext();
-
-export const initialInvoiceData = {
-  title: "New Invoice",
-
-  billing: {
-    name: "",
-    phone: "",
-    address: "",
-  },
-
-  shipping: {
-    name: "",
-    phone: "",
-    address: "",
-  },
-
-  invoice: {
-    number: "",
-    date: "",
-    dueDate: "",
-  },
-
-  account: {
-    holderName: "",
-    number: "",
-    bankName: "",
-  },
-
-  company: {
-    name: "",
-    number: "",
-    address: "",
-  },
-
-  tax: 0,
-
-  notes: "",
-
-  items: [
-    {
-      name: "",
-      qty: "",
-      amount: "",
-      description: "",
-      total: 0,
-    },
-  ],
-
-  logo: "",
-};
 
 export const AppContextProvider = ({ children }) => {
   const [invoiceTitle, setInvoiceTitle] = useState("New Invoice");

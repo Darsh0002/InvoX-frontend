@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 const LandingPage = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  // const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   return (
     <>
       <div className="font-sans text-gray-800 antialiased overflow-x-hidden">

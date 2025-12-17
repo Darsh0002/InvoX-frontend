@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { Check, Crown, Eye, X } from "lucide-react";
+import toast from "react-hot-toast";
 
 // Import your data
 import { templates, proTemplates } from "../assets/assets.js";
 
 const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
-  const [selectedTemplate, setSelectedTemplate] = useState(1);
+  const [selectedTemplate, setSelectedTemplate] = useState(templates[0].id);
 
   // Helper to merge lists
   const allTemplates = [
     ...templates.map((t) => ({ ...t, isPro: false })),
     ...proTemplates.map((t) => ({ ...t, isPro: true })),
   ];
+
+  const selectedTemplateData = allTemplates.find(t => t.id === selectedTemplate);
 
   return (
     <div className="space-y-8">
@@ -100,7 +103,13 @@ const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
       {/* Action Buttons */}
       <div className="text-center">
         <button
-          onClick={onPreviewClick}
+          onClick={() => {
+            if (selectedTemplateData?.isPro) {
+              toast.error("Upgrade to Pro ✪");
+            } else {
+              onPreviewClick();
+            }
+          }}
           className="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-all font-medium shadow-md hover:shadow-lg transform active:scale-95"
         >
           <Eye size={16} />
