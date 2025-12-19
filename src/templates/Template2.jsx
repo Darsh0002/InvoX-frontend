@@ -2,10 +2,6 @@ import React from "react";
 import {
   Phone,
   Building,
-  Facebook,
-  Instagram,
-  Twitter,
-  Globe,
 } from "lucide-react";
 
 const Template2 = ({ data }) => {
@@ -31,7 +27,6 @@ const Template2 = ({ data }) => {
     // Bottom Left Info Section Data
     contactAddress,
     contactPhone,
-    website,
     terms,
   } = data || {};
 
@@ -81,21 +76,12 @@ const Template2 = ({ data }) => {
           {/* Right Side Company Info & Logo */}
           <div className="text-right flex flex-col items-end">
             <div className="mb-6">
-              {companyLogo ? (
+              {companyLogo && (
                 <img
                   src={companyLogo}
                   alt="Logo"
                   className="h-16 object-contain"
                 />
-              ) : (
-                <div
-                  className="text-3xl font-bold leading-tight uppercase"
-                  style={{ color: colors.purple }}
-                >
-                  YOUR
-                  <br />
-                  LOGO
-                </div>
               )}
             </div>
           </div>
@@ -113,7 +99,7 @@ const Template2 = ({ data }) => {
             Invoice <span className="font-normal text-gray-600">to</span>
           </p>
           <h2 className="text-2xl font-medium mb-2">
-            {billingName || "Client Name"}
+            {billingName || "Client"}
           </h2>
           <p className="text-lg text-gray-600 whitespace-pre-line">
             {billingAddress || companyAddress}
@@ -222,10 +208,8 @@ const Template2 = ({ data }) => {
                 <Phone size={16} />
                 {contactPhone || "+1 234 567 890"}
               </li>
-              <li>{website || "www.company.com"}</li>
             </ul>
           </div>
-
 
           {/* Terms & Conditions */}
           <div>

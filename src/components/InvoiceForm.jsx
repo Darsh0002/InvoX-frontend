@@ -151,18 +151,22 @@ const InvoiceForm = () => {
                 htmlFor="image"
                 className="flex flex-col items-center justify-center w-32 h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 hover:border-blue-400 transition-all"
               >
-                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                {invoiceData.logo ? (
                   <img
-                    src={
-                      invoiceData.logo
-                        ? invoiceData.logo
-                        : "https://cdn-icons-png.flaticon.com/512/126/126477.png"
-                    }
-                    alt="Upload"
-                    className="w-8 h-8 opacity-40 mb-2"
+                    src={invoiceData.logo}
+                    alt="Company Logo"
+                    className="w-32 h-32 object-cover rounded-lg"
                   />
-                  <p className="text-xs text-gray-500">Click to upload</p>
-                </div>
+                ) : (
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <img
+                      src="https://cdn-icons-png.flaticon.com/512/126/126477.png"
+                      alt="Upload"
+                      className="w-8 h-8 opacity-40 mb-2"
+                    />
+                    <p className="text-xs text-gray-500">Click to upload</p>
+                  </div>
+                )}
                 <input
                   type="file"
                   id="image"
