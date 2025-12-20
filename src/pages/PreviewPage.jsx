@@ -1,13 +1,42 @@
-import React, { useRef, useContext } from "react";
+import React, { useRef, useContext, useState } from "react";
 import { templates } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import InvoicePreview from "../components/InvoicePreview";
-import { Save, Trash2, ArrowLeft, Mail, Download } from "lucide-react";
+import { Save, Trash2, ArrowLeft, Mail, Download, Loader2 } from "lucide-react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { saveInvoice } from "../service/invoiceService";
 
 const PreviewPage = () => {
   const previewRef = useRef();
-  const { selectedTemplate, setSelectedTemplate, invoiceData } =
+  const { selectedTemplate, setSelectedTemplate, invoiceData, baseURL } =
     useContext(AppContext);
+
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSave = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        ...invoiceData,
+        template: selectedTemplate,
+      };
+      const response = await saveInvoice(baseURL, payload);
+
+      if (response.status >= 200 && response.status < 300) {
+        toast.success("Invoice saved successfully");
+        navigate("/dashboard");
+      } else {
+        toast.error("Failed to save invoice");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save invoice: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 ">
@@ -41,9 +70,20 @@ const PreviewPage = () => {
 
       {/* ===== Action Buttons ===== */}
       <div className="mb-6 flex flex-wrap gap-3 justify-center">
-        <button className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition flex items-center gap-2">
-          <Save size={16} />
-          Save
+        <button
+          className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700 transition flex items-center gap-2"
+          onClick={handleSave}
+          disabled={loading}
+        >
+          {loading && <Loader2 className="animate-spin" size={16} />}
+          {loading ? (
+            "Saving..."
+          ) : (
+            <>
+              <Save size={16} />
+              Save and Exit
+            </>
+          )}
         </button>
 
         <button className="px-4 py-2 rounded-lg bg-red-600 text-white hover:bg-red-700 transition flex items-center gap-2">
