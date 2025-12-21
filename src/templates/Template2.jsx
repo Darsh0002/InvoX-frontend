@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Phone,
-  Building,
-} from "lucide-react";
+import { Phone, Building } from "lucide-react";
 
 const Template2 = ({ data }) => {
   const {

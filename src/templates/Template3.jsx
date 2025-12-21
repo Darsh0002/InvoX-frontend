@@ -177,7 +177,8 @@ const Template3 = ({ data }) => {
                 Terms & Conditions
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">
-                {notes || "Payment is due within 15 days. Late payment may incur fees."}
+                {notes ||
+                  "Payment is due within 15 days. Late payment may incur fees."}
               </p>
             </div>
 

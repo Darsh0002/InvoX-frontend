@@ -17,8 +17,6 @@ const LandingPage = () => {
   return (
     <>
       <div className="font-sans text-gray-800 antialiased overflow-x-hidden">
-        
-
         {/* ================= Hero Section ================= */}
         <section className="relative pt-32 pb-20 lg:pt-24 lg:pb-32 bg-blue-500 overflow-hidden">
           {/* Abstract shapes for visual interest */}
@@ -33,8 +31,8 @@ const LandingPage = () => {
               <span className="text-blue-100">Professional Results.</span>
             </h1>
             <p className="text-lg md:text-xl text-blue-50 mb-10 max-w-2xl mx-auto leading-relaxed">
-              Stop wrestling with spreadsheets. InvoX helps you create
-              and send beautiful invoices in minutes, so you get paid faster.
+              Stop wrestling with spreadsheets. InvoX helps you create and send
+              beautiful invoices in minutes, so you get paid faster.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl hover:shadow-yellow-400/20 transform hover:-translate-y-1">
@@ -222,9 +220,7 @@ const LandingPage = () => {
                 <div className="bg-gray-800 p-2 rounded-lg">
                   <img src="./logo.png" className="h-8 w-8 " />
                 </div>
-                <span className="text-2xl font-bold tracking-tight">
-                  InvoX
-                </span>
+                <span className="text-2xl font-bold tracking-tight">InvoX</span>
               </div>
               <div className="flex space-x-6">
                 <SocialIcon Icon={Twitter} />

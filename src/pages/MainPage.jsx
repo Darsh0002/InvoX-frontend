@@ -22,12 +22,14 @@ const MainPage = () => {
   };
 
   const handlePreviewClick = () => {
-    const hasInvalidItems = invoiceData.items.some((item) => !item.name || !item.qty || !item.amount);
+    const hasInvalidItems = invoiceData.items.some(
+      (item) => !item.name || !item.qty || !item.amount
+    );
     if (hasInvalidItems) {
       toast.error("Please fill all details before previewing the template.");
       return;
     }
-    navigate('/preview');
+    navigate("/preview");
   };
 
   return (
@@ -92,7 +94,10 @@ const MainPage = () => {
                 <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
                 Choose Template
               </h2>
-              <TemplateGrid onTemplateClick={handleTemplateClick} onPreviewClick={handlePreviewClick} />
+              <TemplateGrid
+                onTemplateClick={handleTemplateClick}
+                onPreviewClick={handlePreviewClick}
+              />
             </div>
           </div>
         </div>

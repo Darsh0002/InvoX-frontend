@@ -14,7 +14,9 @@ const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
     ...proTemplates.map((t) => ({ ...t, isPro: true })),
   ];
 
-  const selectedTemplateData = allTemplates.find(t => t.id === selectedTemplate);
+  const selectedTemplateData = allTemplates.find(
+    (t) => t.id === selectedTemplate
+  );
 
   return (
     <div className="space-y-8">
