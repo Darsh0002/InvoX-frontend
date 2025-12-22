@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { saveInvoice } from "../service/invoiceService";
+import { saveInvoice, deleteInvoice } from "../service/invoiceService";
 import { toPng } from "html-to-image";
 import { uploadInvoiceThumbnail } from "../service/cloudinaryService";
 
@@ -53,6 +53,20 @@ const PreviewPage = () => {
       toast.error("Failed to save invoice!!");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      const res = await deleteInvoice(baseURL, invoiceData.id);
+      if (res.status >= 200 && res.status < 300) {
+        toast.success("Invoice deleted successfully");
+        navigate("/dashboard");
+      } else {
+        toast.error("Failed to delete invoice");
+      }
+    } catch (error) {
+      toast.error("Failed to delete invoice");
     }
   };
 
@@ -141,9 +155,14 @@ const PreviewPage = () => {
             </button>
 
             {/* Delete - Soft Red */}
-            <button className="w-full py-2.5 px-4 rounded-lg bg-red-50 border border-red-100 text-red-700 hover:bg-red-100 hover:border-red-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm">
-              <Trash2 size={18} /> Delete Invoice
-            </button>
+            {invoiceData.id && (
+              <button
+                onClick={handleDelete}
+                className="w-full py-2.5 px-4 rounded-lg bg-red-50 border border-red-100 text-red-700 hover:bg-red-100 hover:border-red-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm"
+              >
+                <Trash2 size={18} /> Delete Invoice
+              </button>
+            )}
 
             {/* Back Button - Neutral Gray */}
             <button
