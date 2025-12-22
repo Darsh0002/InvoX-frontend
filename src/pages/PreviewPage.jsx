@@ -6,6 +6,8 @@ import { Save, Trash2, ArrowLeft, Mail, Download, Loader2 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { saveInvoice } from "../service/invoiceService";
+import { toPng } from "html-to-image";
+import { uploadInvoiceThumbnail } from "../service/cloudinaryService";
 
 const PreviewPage = () => {
   const previewRef = useRef();
@@ -18,8 +20,16 @@ const PreviewPage = () => {
   const handleSave = async () => {
     try {
       setLoading(true);
+
+      const imageData = await toPng(previewRef.current, {
+        cacheBust: true,
+        pixelRatio: 2,
+      });
+      const thumbnailUrl = await uploadInvoiceThumbnail(imageData);
+
       const payload = {
         ...invoiceData,
+        thumbnailUrl,
         template: selectedTemplate,
       };
       const response = await saveInvoice(baseURL, payload);
@@ -32,7 +42,7 @@ const PreviewPage = () => {
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to save invoice: " + error.message);
+      toast.error("Failed to save invoice!!");
     } finally {
       setLoading(false);
     }
@@ -57,11 +67,11 @@ const PreviewPage = () => {
             key={id}
             onClick={() => setSelectedTemplate(id)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all
-              ${
-                selectedTemplate === id
-                  ? "bg-blue-600 text-white shadow"
-                  : "bg-white border border-gray-300 text-gray-700 hover:bg-blue-50"
-              }`}
+                ${
+                  selectedTemplate === id
+                    ? "bg-blue-600 text-white shadow"
+                    : "bg-white border border-gray-300 text-gray-700 hover:bg-blue-50"
+                }`}
           >
             {label}
           </button>
