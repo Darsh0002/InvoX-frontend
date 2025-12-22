@@ -101,7 +101,7 @@ const Dashboard = () => {
         {/* ===== Stats Summary (Optional) ===== */}
         {!loading && (
           <div className="mb-8 flex gap-4 overflow-x-auto pb-2">
-            <div className="bg-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-200 min-w-[150px]">
+            <div className="bg-blue-600 text-white px-6 py-3 rounded-xl shadow-lg shadow-blue-200 min-w-37.5">
               <p className="text-blue-100 text-xs font-medium uppercase">
                 Total Invoices
               </p>
@@ -116,7 +116,7 @@ const Dashboard = () => {
           {/* 1. Create New Invoice Card */}
           <div
             onClick={handleCreateNew}
-            className="group relative flex flex-col items-center justify-center min-h-[320px] bg-white border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300"
+            className="group relative flex flex-col items-center justify-center min-h-80 bg-white border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-blue-500 hover:bg-blue-50/50 transition-all duration-300"
           >
             <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300 shadow-sm">
               <Plus className="w-8 h-8" />

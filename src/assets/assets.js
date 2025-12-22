@@ -22,8 +22,8 @@ export const templates = [
   { id: "template1", label: "Template 1", image: assets.temp1 },
   { id: "template2", label: "Template 2", image: assets.temp2 },
   { id: "template3", label: "Template 3", image: assets.temp3 },
-  { id: "template4", label: "Template 4", image: assets.temp4 },
-  { id: "template5", label: "Template 5", image: assets.temp5 },
+  // { id: "template4", label: "Template 4", image: assets.temp4 },
+  // { id: "template5", label: "Template 5", image: assets.temp5 },
 ];
 
 export const proTemplates = [
