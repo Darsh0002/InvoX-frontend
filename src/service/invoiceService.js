@@ -11,3 +11,7 @@ export const getAllInvoices = (baseURL) => {
 export const deleteInvoice = (baseURL, invoiceId) => {
   return axios.delete(`${baseURL}/invoices/${invoiceId}`);
 };
+
+export const sendInvoice = (baseURL, formData) => {
+  return axios.post(`${baseURL}/invoices/sendInvoice`, formData);
+};

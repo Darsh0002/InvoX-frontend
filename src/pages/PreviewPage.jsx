@@ -6,6 +6,8 @@ import {
   Save,
   Trash2,
   ArrowLeft,
+  Send,
+  X,
   Mail,
   Download,
   Loader2,
@@ -13,7 +15,11 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { saveInvoice, deleteInvoice } from "../service/invoiceService";
+import {
+  saveInvoice,
+  deleteInvoice,
+  sendInvoice,
+} from "../service/invoiceService";
 import { toPng } from "html-to-image";
 import { uploadInvoiceThumbnail } from "../service/cloudinaryService";
 import { generatePdfFromElement } from "../util/pdfUtils";
@@ -26,7 +32,9 @@ const PreviewPage = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const [downloading, setDownloading] = useState(false);
-
+  const [showModal, setShowModal] = useState(false);
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -76,12 +84,45 @@ const PreviewPage = () => {
     if (!previewRef.current) return;
     try {
       setDownloading(true);
-      await generatePdfFromElement(previewRef.current, `invoice_${Date.now()}.pdf`);
+      await generatePdfFromElement(
+        previewRef.current,
+        `invoice_${Date.now()}.pdf`
+      );
     } catch (error) {
       console.error("Error generating PDF:", error);
       toast.error("Failed to download PDF");
     } finally {
       setDownloading(false);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    if (!previewRef.current || !customerEmail)
+      return toast.error("Please enter a valid email address");
+
+    try {
+      setSendingEmail(true);
+      const pdfBlob = await generatePdfFromElement(
+        previewRef.current,
+        `invoice_${Date.now()}.pdf`,
+        true
+      );
+      const formData = new FormData();
+      formData.append("email", customerEmail);
+      formData.append("file", pdfBlob, `invoice_${Date.now()}.pdf`);
+      const response = await sendInvoice(baseURL, formData);
+
+      if (response.status >= 200 && response.status < 300) {
+        toast.success("Email sent successfully");
+        setShowModal(false);
+      } else {
+        toast.error("Failed to send email");
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast.error("Failed to send email");
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -176,7 +217,10 @@ const PreviewPage = () => {
             </button>
 
             {/* Send Email - Soft Purple */}
-            <button className="w-full py-2.5 px-4 rounded-lg bg-purple-50 border border-purple-100 text-purple-700 hover:bg-purple-100 hover:border-purple-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm">
+            <button
+              onClick={() => setShowModal(true)}
+              className="w-full py-2.5 px-4 rounded-lg bg-purple-50 border border-purple-100 text-purple-700 hover:bg-purple-100 hover:border-purple-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm"
+            >
               <Mail size={18} /> Send Email
             </button>
 
@@ -200,6 +244,74 @@ const PreviewPage = () => {
           </div>
         </div>
       </aside>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop with Blur */}
+          <div
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity animate-in fade-in duration-300"
+            onClick={() => setShowModal(false)}
+          />
+
+          {/* Modal Container */}
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
+              <div>
+                <h2 className="text-xl font-bold text-gray-800">
+                  Share this invoice with your client
+                </h2>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="p-2 rounded-full text-gray-700 hover:bg-gray-100 hover:text-red-500 transition-all"
+              >
+                <X size={24} />
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-4">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+                  <Mail size={18} className="text-gray-400" />
+                  Recipient Email
+                </label>
+                <input
+                  type="email"
+                  value={customerEmail}
+                  onChange={(e) => setCustomerEmail(e.target.value)}
+                  name="email"
+                  placeholder="e.g. client@company.com"
+                  className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 focus:bg-white outline-none transition-all text-gray-900 placeholder:text-gray-400"
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSendEmail}
+                disabled={sendingEmail}
+                className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 active:scale-95 shadow-lg shadow-blue-500/20 transition-all"
+              >
+                {sendingEmail ? (
+                  <Loader2 size={16} className="animate-spin" />
+                ) : (
+                  <Send size={16} />
+                )}
+                {sendingEmail ? "Sending..." : "Send Email"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
