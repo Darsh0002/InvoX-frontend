@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { saveInvoice, deleteInvoice } from "../service/invoiceService";
 import { toPng } from "html-to-image";
 import { uploadInvoiceThumbnail } from "../service/cloudinaryService";
+import { generatePdfFromElement } from "../util/pdfUtils";
 
 const PreviewPage = () => {
   const previewRef = useRef();
@@ -24,6 +25,7 @@ const PreviewPage = () => {
 
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [downloading, setDownloading] = useState(false);
 
   const handleSave = async () => {
     try {
@@ -70,6 +72,19 @@ const PreviewPage = () => {
     }
   };
 
+  const handleDownloadPdf = async () => {
+    if (!previewRef.current) return;
+    try {
+      setDownloading(true);
+      await generatePdfFromElement(previewRef.current, `invoice_${Date.now()}.pdf`);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to download PDF");
+    } finally {
+      setDownloading(false);
+    }
+  };
+
   return (
     // Outer Container: Full screen, no scroll on body
     <div className="flex h-screen overflow-hidden bg-gray-100 font-sans">
@@ -79,8 +94,7 @@ const PreviewPage = () => {
         <div className="my-auto w-full flex justify-center py-1">
           <div
             ref={previewRef}
-            className="w-full max-w-198.5 min-h-280.75 bg-white shadow-2xl shadow-gray-300/50 rounded-sm overflow-hidden"
-            // Standard A4 ratio width (approx 794px for web display)
+            className="w-full max-w-198.5 min-h-280.75 bg-white shadow-2xl shadow-gray-300/50 rounded-sm"
           >
             <InvoicePreview
               invoiceData={invoiceData}
@@ -145,8 +159,20 @@ const PreviewPage = () => {
           {/* 3. Secondary Actions */}
           <div className="space-y-3">
             {/* Download PDF - Soft Blue */}
-            <button className="w-full py-2.5 px-4 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm">
-              <Download size={18} /> Download PDF
+            <button
+              onClick={handleDownloadPdf}
+              disabled={downloading}
+              className="w-full py-2.5 px-4 rounded-lg bg-blue-50 border border-blue-100 text-blue-700 hover:bg-blue-100 hover:border-blue-300 transition-all flex justify-center items-center gap-3 font-medium text-sm shadow-sm"
+            >
+              {downloading ? (
+                <>
+                  <Loader2 size={18} className="animate-spin" /> Downloading...
+                </>
+              ) : (
+                <>
+                  <Download size={18} /> Download PDF
+                </>
+              )}
             </button>
 
             {/* Send Email - Soft Purple */}
