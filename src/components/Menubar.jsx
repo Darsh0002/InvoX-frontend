@@ -1,8 +1,15 @@
 import { Link, NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
 
 const Menubar = () => {
+
+  const { openSignIn } = useClerk();
+  const openLogin = () => {
+    openSignIn({});
+  };
+
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const scrollToTop = () => {
@@ -94,7 +101,8 @@ const Menubar = () => {
               </NavLink>
             </li>
 
-            <li>
+            <SignedIn>
+              <li>
               <NavLink
                 to="/dashboard"
                 className={({ isActive }) =>
@@ -118,11 +126,17 @@ const Menubar = () => {
                 Generate
               </button>
             </li>
-            <li>
-              <button className="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
+            <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <li>
+              <button
+                onClick={openLogin}
+                className="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
                 Login/SignUp
               </button>
             </li>
+            </SignedOut>
           </ul>
         </div>
       </div>
