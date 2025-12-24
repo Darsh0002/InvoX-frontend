@@ -9,7 +9,7 @@ export const AppContextProvider = ({ children }) => {
   const [invoiceData, setInvoiceData] = useState(initialInvoiceData);
   const [selectedTemplate, setSelectedTemplate] = useState("template1");
 
-  const baseURL = "http://localhost:8080";
+  const baseURL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
   const contextValue = {
     invoiceTitle,
