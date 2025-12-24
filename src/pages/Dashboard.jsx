@@ -16,6 +16,7 @@ import {
   Eye,
 } from "lucide-react";
 import { initialInvoiceData } from "../constants";
+import { useAuth } from "@clerk/clerk-react";
 
 const Dashboard = () => {
   const [invoices, setInvoices] = useState([]);
@@ -25,11 +26,13 @@ const Dashboard = () => {
   const { baseURL, setInvoiceData, setSelectedTemplate, setInvoiceTitle } =
     useContext(AppContext);
   const navigate = useNavigate();
+  const {getToken} = useAuth();
 
   useEffect(() => {
     const fetchInvoices = async () => {
       try {
-        const res = await getAllInvoices(baseURL);
+        const token = await getToken();
+        const res = await getAllInvoices(baseURL, token);
         setInvoices(res.data);
       } catch (error) {
         toast.error("Error fetching invoices");

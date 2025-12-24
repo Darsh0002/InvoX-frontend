@@ -1,4 +1,4 @@
-import React, { useRef, useContext, useState } from "react";
+import React, { useRef, useContext, useState, useEffect } from "react";
 import { templates } from "../assets/assets";
 import { AppContext } from "../context/AppContext";
 import InvoicePreview from "../components/InvoicePreview";
@@ -23,6 +23,7 @@ import {
 import { toPng } from "html-to-image";
 import { uploadInvoiceThumbnail } from "../service/cloudinaryService";
 import { generatePdfFromElement } from "../util/pdfUtils";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 const PreviewPage = () => {
   const previewRef = useRef();
@@ -35,6 +36,9 @@ const PreviewPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [customerEmail, setCustomerEmail] = useState("");
   const [sendingEmail, setSendingEmail] = useState(false);
+  const { getToken } = useAuth();
+  const { user } = useUser();
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -47,10 +51,13 @@ const PreviewPage = () => {
 
       const payload = {
         ...invoiceData,
+        clerkId: user.id,
         thumbnailUrl,
         template: selectedTemplate,
       };
-      const response = await saveInvoice(baseURL, payload);
+
+      const token = await getToken();
+      const response = await saveInvoice(baseURL, payload, token);
 
       if (response.status >= 200 && response.status < 300) {
         toast.success("Invoice saved successfully");
@@ -68,7 +75,8 @@ const PreviewPage = () => {
 
   const handleDelete = async () => {
     try {
-      const res = await deleteInvoice(baseURL, invoiceData.id);
+      const token = await getToken();
+      const res = await deleteInvoice(baseURL, invoiceData.id, token);
       if (res.status >= 200 && res.status < 300) {
         toast.success("Invoice deleted successfully");
         navigate("/dashboard");
@@ -110,7 +118,9 @@ const PreviewPage = () => {
       const formData = new FormData();
       formData.append("email", customerEmail);
       formData.append("file", pdfBlob, `invoice_${Date.now()}.pdf`);
-      const response = await sendInvoice(baseURL, formData);
+
+      const token = await getToken();
+      const response = await sendInvoice(baseURL, formData, token);
 
       if (response.status >= 200 && response.status < 300) {
         toast.success("Email sent successfully");
@@ -125,6 +135,13 @@ const PreviewPage = () => {
       setSendingEmail(false);
     }
   };
+
+  useEffect(() => {
+    if (!invoiceData || invoiceData.items.length === 0) {
+      toast.error("No invoice data found. Please create an invoice first.");
+      navigate("/dashboard");
+    }
+  }, [invoiceData, navigate]);
 
   return (
     // Outer Container: Full screen, no scroll on body
