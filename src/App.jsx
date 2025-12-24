@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import Menubar from "./components/Menubar";
 import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage";
@@ -16,7 +16,19 @@ const App = () => {
       <Menubar />
       <Toaster position="top-center" reverseOrder={false} />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route
+          path="/"
+          element={
+            <>
+              <SignedIn>
+                <Navigate to="/dashboard" replace />
+              </SignedIn>
+              <SignedOut>
+                <LandingPage />
+              </SignedOut>
+            </>
+          }
+        />
 
         <Route
           path="/dashboard"

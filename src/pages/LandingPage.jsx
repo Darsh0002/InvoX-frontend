@@ -1,19 +1,18 @@
 import React from "react";
 import {
   CheckCircle,
-  FileText,
-  Send,
-  LayoutDashboard,
-  Download,
-  Menu,
-  X,
   Twitter,
   Linkedin,
   Facebook,
 } from "lucide-react";
+import { SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
+
 
 const LandingPage = () => {
-  // const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const { openSignIn } = useClerk();
+  const openLogin = () => {
+    openSignIn({});
+  };
   return (
     <>
       <div className="font-sans text-gray-800 antialiased overflow-x-hidden">
@@ -35,7 +34,9 @@ const LandingPage = () => {
               beautiful invoices in minutes, so you get paid faster.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl hover:shadow-yellow-400/20 transform hover:-translate-y-1">
+              <button
+                onClick={openLogin}
+                className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl hover:shadow-yellow-400/20 transform hover:-translate-y-1">
                 Generate Your First Invoice
               </button>
               <button className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition">
