@@ -10,10 +10,10 @@ import {
   FileText,
   MoreVertical,
   Calendar,
-  DollarSign,
   Edit2,
   Trash2,
   Eye,
+  IndianRupee,
 } from "lucide-react";
 import { initialInvoiceData } from "../constants";
 import { useAuth } from "@clerk/clerk-react";
@@ -209,12 +209,12 @@ const Dashboard = () => {
                   <div className="mt-auto space-y-3 pt-4 border-t border-gray-50">
                     <div className="flex items-center text-gray-500 text-sm">
                       <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                      <span>{formatDate(inv.lastUpdatedAt)}</span>
+                      <span>{formatDate(inv.createdAt)}</span>
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-gray-700 font-semibold">
-                        <DollarSign className="w-4 h-4 text-green-600 mr-1" />
+                        <IndianRupee className="w-4 h-4 text-green-600 mr-1"/>
                         <span>
                           {calculateTotal(inv.items).toLocaleString("en-US", {
                             minimumFractionDigits: 2,

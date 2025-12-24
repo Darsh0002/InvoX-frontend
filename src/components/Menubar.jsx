@@ -1,10 +1,11 @@
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
+import { AppContext } from "../context/AppContext";
+import { initialInvoiceData } from "../constants";
 
 const Menubar = () => {
-
   const { openSignIn } = useClerk();
   const openLogin = () => {
     openSignIn({});
@@ -18,6 +19,18 @@ const Menubar = () => {
       smooth: true,
     });
   };
+
+  const
+    { setInvoiceData, setSelectedTemplate, setInvoiceTitle } =
+    useContext(AppContext);
+
+  const handleGenerateClick = () => {
+    setInvoiceData(initialInvoiceData);
+    setSelectedTemplate("template1");
+    setInvoiceTitle("New Invoice");
+    navigate("/generate");
+  };
+
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm">
       {/* Added md:flex, md:items-center, md:justify-between here to align Logo and Menu side-by-side on desktop */}
@@ -103,39 +116,40 @@ const Menubar = () => {
 
             <SignedIn>
               <li>
-              <NavLink
-                to="/dashboard"
-                className={({ isActive }) =>
-                  `block py-2 font-medium transition-colors duration-200 ${
-                    isActive
-                      ? "text-blue-600"
-                      : "text-gray-700 hover:text-blue-600"
-                  }`
-                }
-              >
-                Dashboard
-              </NavLink>
-            </li>
+                <NavLink
+                  to="/dashboard"
+                  className={({ isActive }) =>
+                    `block py-2 font-medium transition-colors duration-200 ${
+                      isActive
+                        ? "text-blue-600"
+                        : "text-gray-700 hover:text-blue-600"
+                    }`
+                  }
+                >
+                  Dashboard
+                </NavLink>
+              </li>
 
-            {/* Buttons */}
-            <li>
-              <button
-                className="w-full md:w-auto bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-200"
-                onClick={() => navigate("/generate")}
-              >
-                Generate
-              </button>
-            </li>
-            <UserButton />
+              {/* Buttons */}
+              <li>
+                <button
+                  className="w-full md:w-auto bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 transition duration-200"
+                  onClick={handleGenerateClick}
+                >
+                  Generate
+                </button>
+              </li>
+              <UserButton />
             </SignedIn>
             <SignedOut>
               <li>
-              <button
-                onClick={openLogin}
-                className="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200">
-                Login/SignUp
-              </button>
-            </li>
+                <button
+                  onClick={openLogin}
+                  className="w-full md:w-auto bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                >
+                  Login/SignUp
+                </button>
+              </li>
             </SignedOut>
           </ul>
         </div>
