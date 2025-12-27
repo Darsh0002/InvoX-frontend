@@ -23,10 +23,10 @@ const MainPage = () => {
 
   const handlePreviewClick = () => {
     const hasInvalidItems = invoiceData.items.some(
-      (item) => !item.name || !item.qty || !item.amount
+      (item) => !item.name || !item.qty || !item.amount || item.amount<0
     );
     if (hasInvalidItems) {
-      toast.error("Please fill all details before previewing the template.");
+      toast.error("Enter Valid Item Details");
       return;
     }
     navigate("/preview");
@@ -67,9 +67,6 @@ const MainPage = () => {
                   </button>
                 </>
               )}
-            </div>
-            <div className="text-sm text-gray-500 font-medium">
-              Invoice Generator Pro
             </div>
           </div>
         </div>

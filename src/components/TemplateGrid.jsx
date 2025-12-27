@@ -107,7 +107,7 @@ const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
         <button
           onClick={() => {
             if (selectedTemplateData?.isPro) {
-              toast.error("Upgrade to Pro ✪");
+              toast.error("Pro Templates Coming Soon !!");
             } else {
               onPreviewClick();
             }
@@ -115,7 +115,7 @@ const TemplateGrid = ({ onTemplateClick, onPreviewClick }) => {
           className="inline-flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white text-sm rounded-lg hover:bg-gray-800 transition-all font-medium shadow-md hover:shadow-lg transform active:scale-95"
         >
           <Eye size={16} />
-          Preview Selection
+          Preview Invoice
         </button>
       </div>
     </div>

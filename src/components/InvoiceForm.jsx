@@ -390,6 +390,7 @@ const InvoiceForm = () => {
                   </label>
                   <input
                     type="number"
+                    min="0"
                     className={inputClass}
                     placeholder="0.00"
                     value={item.amount}

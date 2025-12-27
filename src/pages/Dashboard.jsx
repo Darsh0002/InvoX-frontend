@@ -8,15 +8,14 @@ import {
   Plus,
   Search,
   FileText,
-  MoreVertical,
   Calendar,
-  Edit2,
   Trash2,
   Eye,
   IndianRupee,
 } from "lucide-react";
 import { initialInvoiceData } from "../constants";
 import { useAuth } from "@clerk/clerk-react";
+import { deleteInvoice } from "../service/invoiceService";
 
 const Dashboard = () => {
   const [invoices, setInvoices] = useState([]);
@@ -26,7 +25,7 @@ const Dashboard = () => {
   const { baseURL, setInvoiceData, setSelectedTemplate, setInvoiceTitle } =
     useContext(AppContext);
   const navigate = useNavigate();
-  const {getToken} = useAuth();
+  const { getToken } = useAuth();
 
   useEffect(() => {
     const fetchInvoices = async () => {
@@ -57,6 +56,26 @@ const Dashboard = () => {
     setSelectedTemplate("template1");
     setInvoiceData(initialInvoiceData);
     navigate("/generate");
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this invoice?"))
+      return;
+    try {
+      const token = await getToken();
+      const res = await deleteInvoice(baseURL, id, token);
+      if (res.status >= 200 && res.status < 300) {
+        toast.success("Invoice deleted successfully");
+
+        setInvoices((prevInvoices) =>
+          prevInvoices.filter((inv) => inv.id !== id)
+        );
+      } else {
+        toast.error("Failed to delete invoice");
+      }
+    } catch (error) {
+      toast.error("Failed to delete invoice");
+    }
   };
 
   // Helper: Calculate total amount from items array
@@ -176,12 +195,7 @@ const Dashboard = () => {
                       <Eye size={18} />
                     </button>
                     <button
-                      className="p-2 bg-white text-gray-700 rounded-full hover:bg-green-600 hover:text-white transition-colors shadow-lg"
-                      title="Edit"
-                    >
-                      <Edit2 size={18} />
-                    </button>
-                    <button
+                      onClick={() => handleDelete(inv.id)}
                       className="p-2 bg-white text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-colors shadow-lg"
                       title="Delete"
                     >
@@ -214,18 +228,13 @@ const Dashboard = () => {
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center text-gray-700 font-semibold">
-                        <IndianRupee className="w-4 h-4 text-green-600 mr-1"/>
+                        <IndianRupee className="w-4 h-4 text-green-600 mr-1" />
                         <span>
                           {calculateTotal(inv.items).toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                           })}
                         </span>
                       </div>
-
-                      {/* Menu Trigger (Optional) */}
-                      <button className="text-gray-400 hover:text-gray-600">
-                        <MoreVertical size={16} />
-                      </button>
                     </div>
                   </div>
                 </div>
