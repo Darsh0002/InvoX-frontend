@@ -108,11 +108,11 @@ const InvoiceForm = () => {
     "text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 border-b pb-1";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Main Container */}
-      <div className="bg-white shadow-xl rounded-lg w-full p-6 border border-gray-200">
+      <div className="bg-white shadow-xl rounded-lg w-full p-4 sm:p-6 border border-gray-200">
         {/* --- Header Section --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Company Info */}
           <div className="flex flex-col justify-end">
             <h5 className={sectionTitleClass}>From (Company Info)</h5>
@@ -149,20 +149,20 @@ const InvoiceForm = () => {
             <div className="mt-1">
               <label
                 htmlFor="image"
-                className="flex flex-col items-center justify-center w-32 h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 hover:border-blue-400 transition-all"
+                className="flex flex-col items-center justify-center w-24 h-24 sm:w-32 sm:h-32 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100 hover:border-blue-400 transition-all"
               >
                 {invoiceData.logo ? (
                   <img
                     src={invoiceData.logo}
                     alt="Company Logo"
-                    className="w-32 h-32 object-cover rounded-lg"
+                    className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
                   />
                 ) : (
-                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                  <div className="flex flex-col items-center justify-center pt-3 sm:pt-5 pb-4 sm:pb-6">
                     <img
                       src="https://cdn-icons-png.flaticon.com/512/126/126477.png"
                       alt="Upload"
-                      className="w-8 h-8 opacity-40 mb-2"
+                      className="w-6 h-6 sm:w-8 sm:h-8 opacity-40 mb-2"
                     />
                     <p className="text-xs text-gray-500">Click to upload</p>
                   </div>
@@ -179,10 +179,10 @@ const InvoiceForm = () => {
           </div>
         </div>
 
-        <hr className="border-gray-200 my-6" />
+        <hr className="border-gray-200 my-4 sm:my-6" />
 
         {/* --- Client & Shipping Section --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Bill To */}
           <div>
             <h5 className={sectionTitleClass}>Bill To</h5>
@@ -286,9 +286,9 @@ const InvoiceForm = () => {
         </div>
 
         {/* --- Invoice Info --- */}
-        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 mb-8">
+        <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200 mb-6 sm:mb-8">
           <h5 className="font-semibold text-gray-700 mb-4">Invoice Details</h5>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div>
               <label className={labelClass}>Invoice Number</label>
               <div className="relative">
@@ -330,25 +330,25 @@ const InvoiceForm = () => {
         </div>
 
         {/* --- Item Details --- */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <h5 className={sectionTitleClass}>Item Details</h5>
 
           {/* Table Header (Hidden on Mobile) */}
-          <div className="hidden md:grid grid-cols-12 gap-4 mb-2 text-xs font-medium text-gray-500 uppercase">
+          <div className="hidden sm:grid grid-cols-12 gap-4 mb-2 text-xs font-medium text-gray-500 uppercase">
             <div className="col-span-6">Item Description</div>
             <div className="col-span-2">Quantity</div>
             <div className="col-span-2">Price</div>
             <div className="col-span-2">Total</div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-start border-b border-gray-100 pb-4 mb-4">
+          <div className="space-y-4 sm:space-y-0">
             {invoiceData.items.map((item, index) => (
               <div
                 key={index}
-                className="col-span-12 md:col-span-12 grid grid-cols-12 gap-4 items-start"
+                className="grid grid-cols-1 sm:grid-cols-12 gap-4 items-start border-b border-gray-100 pb-4 mb-4 sm:pb-4 sm:mb-4 last:border-b-0 last:pb-0 last:mb-0"
               >
                 {/* Item Name & Description */}
-                <div className="col-span-1 md:col-span-6 space-y-2">
+                <div className="col-span-1 sm:col-span-6 space-y-2">
                   <input
                     type="text"
                     className={inputClass}
@@ -370,8 +370,10 @@ const InvoiceForm = () => {
                 </div>
 
                 {/* Quantity */}
-                <div className="col-span-1 md:col-span-2">
-                  <label className="md:hidden text-xs text-gray-500">Qty</label>
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="sm:hidden text-xs text-gray-500 font-medium mb-1 block">
+                    Qty
+                  </label>
                   <input
                     type="number"
                     className={inputClass}
@@ -384,8 +386,8 @@ const InvoiceForm = () => {
                 </div>
 
                 {/* Price */}
-                <div className="col-span-1 md:col-span-2">
-                  <label className="md:hidden text-xs text-gray-500">
+                <div className="col-span-1 sm:col-span-2">
+                  <label className="sm:hidden text-xs text-gray-500 font-medium mb-1 block">
                     Amount
                   </label>
                   <input
@@ -401,9 +403,9 @@ const InvoiceForm = () => {
                 </div>
 
                 {/* Total & Delete */}
-                <div className="col-span-1 md:col-span-2 flex items-center gap-2">
+                <div className="col-span-1 sm:col-span-2 flex items-center gap-2">
                   <div className="flex-1">
-                    <label className="md:hidden text-xs text-gray-500">
+                    <label className="sm:hidden text-xs text-gray-500 font-medium mb-1 block">
                       Total
                     </label>
                     <input
@@ -416,7 +418,7 @@ const InvoiceForm = () => {
                   </div>
                   {invoiceData.items.length > 1 && (
                     <button
-                      className="text-red-400 hover:text-red-600 p-2 mt-5 md:mt-0 transition"
+                      className="text-red-400 hover:text-red-600 p-2 mt-5 sm:mt-0 transition shrink-0"
                       onClick={() => deleteItem(index)}
                     >
                       <Trash2 size={18} />
@@ -427,7 +429,7 @@ const InvoiceForm = () => {
             ))}
           </div>
           <button
-            className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition"
+            className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:text-blue-700 transition mt-4"
             onClick={addItem}
           >
             <Plus size={16} /> Add New Item
@@ -435,9 +437,9 @@ const InvoiceForm = () => {
         </div>
 
         {/* --- Bank & Totals Section --- */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 sm:gap-8 mb-6 sm:mb-8">
           {/* Bank Account Details (Left Side) */}
-          <div className="bg-gray-50 p-6 rounded-lg border border-gray-200 h-fit">
+          <div className="bg-gray-50 p-4 sm:p-6 rounded-lg border border-gray-200 h-fit">
             <h5 className="font-semibold text-gray-700 mb-4">
               Bank Account Details
             </h5>
@@ -481,7 +483,9 @@ const InvoiceForm = () => {
           {/* Totals (Right Side) */}
           <div className="flex flex-col justify-center space-y-3">
             <div className="flex justify-between items-center p-2 border-b border-gray-100">
-              <span className="text-gray-600">Subtotal</span>
+              <span className="text-gray-600 text-sm sm:text-base">
+                Subtotal
+              </span>
               <span className="font-medium text-gray-900">
                 ₹{subtotal.toFixed(2)}
               </span>
@@ -489,7 +493,9 @@ const InvoiceForm = () => {
 
             <div className="flex justify-between items-center p-2 border-b border-gray-100">
               <div className="flex items-center gap-2">
-                <span className="text-gray-600">Tax Rate</span>
+                <span className="text-gray-600 text-sm sm:text-base">
+                  Tax Rate
+                </span>
                 <div className="relative w-16">
                   <input
                     type="number"
@@ -513,11 +519,11 @@ const InvoiceForm = () => {
               </span>
             </div>
 
-            <div className="flex justify-between items-center p-4 bg-blue-50 rounded-lg">
-              <span className="text-lg font-bold text-blue-900">
+            <div className="flex justify-between items-center p-3 sm:p-4 bg-blue-50 rounded-lg">
+              <span className="text-base sm:text-lg font-bold text-blue-900">
                 Grand Total
               </span>
-              <span className="text-lg font-bold text-blue-900">
+              <span className="text-base sm:text-lg font-bold text-blue-900">
                 ₹{grandTotal.toFixed(2)}
               </span>
             </div>
