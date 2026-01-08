@@ -62,7 +62,7 @@ const Template2 = ({ data }) => {
           />
         </svg>
 
-        <div className="relative z-10 px-12 pt-12 flex justify-between">
+        <div className="relative z-10 px-6 sm:px-12 pt-12 flex justify-between">
           {/* Left Side Title */}
           <div>
             <h1 className="text-7xl font-bold text-white tracking-wide">
@@ -86,7 +86,7 @@ const Template2 = ({ data }) => {
       </div>
 
       {/* --- BILLING & INVOICE DETAILS SECTION --- */}
-      <div className="px-12 mt-4 flex justify-between items-start">
+      <div className="px-6 sm:px-12 mt-4 flex justify-between items-start">
         {/* Left Side: Billing/Invoice To */}
         <div className="w-1/2">
           <p
@@ -126,7 +126,7 @@ const Template2 = ({ data }) => {
       </div>
 
       {/* --- TABLE SECTION --- */}
-      <div className="px-12 mt-16 mb-auto">
+      <div className="px-6 sm:px-12 mt-16 mb-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="text-white" style={{ backgroundColor: colors.teal }}>
@@ -188,7 +188,7 @@ const Template2 = ({ data }) => {
       </div>
 
       {/* --- BOTTOM SECTION (Split Info & Totals) --- */}
-      <div className="px-12 mt-12 pb-16 flex justify-between items-start">
+      <div className="px-6 sm:px-12 mt-12 pb-16 flex justify-between items-start">
         {/* LEFT COLUMN: Info, Social, Terms */}
         <div className="w-1/2 pr-10">
           {/* Info block */}

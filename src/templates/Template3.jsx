@@ -35,7 +35,7 @@ const Template3 = ({ data }) => {
       {/* --- HEADER SECTION --- */}
       <div>
         {/* Top Logo Area */}
-        <div className="px-12 pt-10 pb-4">
+        <div className="px-6 sm:px-12 pt-10 pb-4">
           <div className="flex items-center gap-3">
             {companyLogo && (
               <img
@@ -69,7 +69,7 @@ const Template3 = ({ data }) => {
         </div>
 
         {/* Invoice Info Grid */}
-        <div className="px-12 flex justify-between items-start mb-12">
+        <div className="px-6 sm:px-12 flex justify-between items-start mb-12">
           {/* Left: Bill To */}
           <div className="w-1/2">
             <h3 className="text-xl font-bold text-slate-800 mb-4">
@@ -101,7 +101,7 @@ const Template3 = ({ data }) => {
       </div>
 
       {/* --- TABLE SECTION --- */}
-      <div className="px-12 mb-auto">
+      <div className="px-6 sm:px-12 mb-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-800 text-white">
@@ -164,7 +164,7 @@ const Template3 = ({ data }) => {
       </div>
 
       {/* --- FOOTER BODY --- */}
-      <div className="px-12 mt-8">
+      <div className="px-6 sm:px-12 mt-8">
         <div className="flex justify-between items-start">
           {/* Left Column: Terms & Payment */}
           <div className="w-1/2 pr-10">
@@ -231,7 +231,7 @@ const Template3 = ({ data }) => {
         {/* Yellow Bottom Line */}
         <div className="h-1 bg-yellow-400 w-full mb-6"></div>
 
-        <div className="px-12 pb-12 flex justify-between items-end">
+        <div className="px-6 sm:px-12 pb-12 flex justify-between items-end">
           {/* Contact Details */}
           <div className="flex gap-8 text-sm font-bold text-slate-700">
             <div className="flex items-center gap-2">

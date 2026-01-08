@@ -66,7 +66,7 @@ const Template1 = ({ data }) => {
         </div>
 
         {/* Content Container */}
-        <div className="relative z-20 pt-60 px-12 flex justify-between items-start">
+        <div className="relative z-20 pt-60 px-6 sm:px-12 flex justify-between items-start">
           {/* LEFT COLUMN: Invoice Details & Billing Details */}
           <div className="text-slate-800 w-1/2 pr-4">
             <div className="mb-8">
@@ -98,7 +98,7 @@ const Template1 = ({ data }) => {
                   <Phone size={12} /> {billingPhone}
                 </div>
               )}
-              <p className="text-sm text-slate-600 mt-1 w-full max-w-[250px] break-words leading-relaxed">
+              <p className="text-sm text-slate-600 mt-1 w-full max-w-62.5 break-words leading-relaxed">
                 {billingAddress}
               </p>
             </div>
@@ -138,7 +138,7 @@ const Template1 = ({ data }) => {
       </div>
 
       {/* --- TABLE SECTION --- */}
-      <div className="px-12 mt-10 mb-auto">
+      <div className="px-6 sm:px-12 mt-10 mb-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-amber-500 text-white">
@@ -214,7 +214,7 @@ const Template1 = ({ data }) => {
 
       {/* --- FOOTER SECTION --- */}
       <div className="relative mt-12 pb-12">
-        <div className="px-12 relative z-20 flex justify-between items-end gap-10">
+        <div className="px-6 sm:px-12 relative z-20 flex justify-between items-end gap-10">
           <div className="w-full max-w-2xl">
             {/* Notes */}
             {notes && (

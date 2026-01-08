@@ -144,15 +144,15 @@ const PreviewPage = () => {
   }, [invoiceData, navigate]);
 
   return (
-    // Outer Container: Full screen, no scroll on body
-    <div className="flex h-screen overflow-hidden bg-gray-100 font-sans">
+    // Outer Container: Full screen on large, scrollable on small
+    <div className="flex flex-col lg:flex-row lg:h-screen lg:overflow-hidden bg-gray-100 font-sans">
       {/* ================= LEFT SIDE: SCROLLABLE PREVIEW ONLY ================= */}
-      <main className="flex-1 overflow-y-auto p-8 relative flex flex-col items-center bg-gray-200/50">
+      <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 relative flex flex-col items-center bg-gray-200/50">
         {/* The Capture Area */}
         <div className="my-auto w-full flex justify-center py-1">
           <div
             ref={previewRef}
-            className="w-full max-w-198.5 min-h-280.75 bg-white shadow-2xl shadow-gray-300/50 rounded-sm"
+            className="w-full max-w-full sm:max-w-4xl lg:max-w-198.5 min-h-280.75 bg-white shadow-2xl shadow-gray-300/50 rounded-sm overflow-x-auto"
           >
             <InvoicePreview
               invoiceData={invoiceData}
@@ -163,9 +163,9 @@ const PreviewPage = () => {
       </main>
 
       {/* ================= RIGHT SIDE: FIXED SIDEBAR CONTROLS ================= */}
-      <aside className="w-80 bg-white border-l border-gray-200 flex flex-col h-full shadow-[-4px_0_24px_rgba(0,0,0,0.02)] z-20">
+      <aside className="w-full lg:w-80 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 flex flex-col h-auto lg:h-full shadow-[-4px_0_24px_rgba(0,0,0,0.02)] lg:shadow-[-4px_0_24px_rgba(0,0,0,0.02)] z-20">
         {/* Scrollable Content inside Sidebar (if screen is short) */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 lg:space-y-8">
           {/* 1. Template Selector */}
           <div>
             <div className="flex items-center gap-2 mb-3 text-sm font-semibold text-gray-700 uppercase tracking-wide">
@@ -273,9 +273,9 @@ const PreviewPage = () => {
           {/* Modal Container */}
           <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all animate-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="px-6 py-4 flex items-center justify-between border-b border-gray-100">
+            <div className="px-4 sm:px-6 py-4 flex items-center justify-between border-b border-gray-100">
               <div>
-                <h2 className="text-xl font-bold text-gray-800">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-800">
                   Share this invoice with your client
                 </h2>
               </div>
@@ -288,7 +288,7 @@ const PreviewPage = () => {
             </div>
 
             {/* Content */}
-            <div className="p-6 space-y-4">
+            <div className="p-4 sm:p-6 space-y-4">
               <div className="space-y-2">
                 <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
                   <Mail size={18} className="text-gray-400" />
@@ -306,17 +306,17 @@ const PreviewPage = () => {
             </div>
 
             {/* Footer */}
-            <div className="px-6 py-4 bg-gray-50 flex items-center justify-end gap-3">
+            <div className="px-4 sm:px-6 py-4 bg-gray-50 flex flex-col sm:flex-row items-stretch sm:items-center justify-end gap-3">
               <button
                 onClick={() => setShowModal(false)}
-                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors"
+                className="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors order-2 sm:order-1"
               >
                 Cancel
               </button>
               <button
                 onClick={handleSendEmail}
                 disabled={sendingEmail}
-                className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 active:scale-95 shadow-lg shadow-blue-500/20 transition-all"
+                className="flex items-center justify-center gap-2 px-6 py-2 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 active:scale-95 shadow-lg shadow-blue-500/20 transition-all order-1 sm:order-2"
               >
                 {sendingEmail ? (
                   <Loader2 size={16} className="animate-spin" />
