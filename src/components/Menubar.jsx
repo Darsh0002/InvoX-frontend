@@ -42,7 +42,7 @@ const Menubar = () => {
     }`;
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-gray-100 bg-white/80 backdrop-blur-md">
+    <nav className={`sticky top-0 z-50 w-full border-b border-gray-100 ${isOpen ? 'bg-white' : 'bg-white/80 backdrop-blur-md'}`}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* --- LOGO SECTION --- */}
@@ -150,7 +150,7 @@ const Menubar = () => {
       >
         {/* 1. Backdrop Overlay (The "Click Outside" area) */}
         <div
-          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/20 backdrop-blur-sm transition-opacity duration-300 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={closeMenu}
@@ -192,19 +192,21 @@ const Menubar = () => {
             {/* Navigation Links */}
             <nav className="flex flex-col space-y-6">
               <SignedOut>
-                <Link
-                  to="/"
-                  onClick={closeMenu}
-                  className="text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                <button
+                  onClick={() => {
+                    closeMenu();
+                    navigate("/");
+                  }}
+                  className="w-full rounded-xl bg-gray-100 py-3 text-left text-lg font-medium text-gray-900 hover:bg-gray-200 hover:text-blue-600 transition-colors"
                 >
                   Home
-                </Link>
+                </button>
                 <button
                   onClick={() => {
                     handleScroll("features");
                     closeMenu();
                   }}
-                  className="text-left text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                  className="w-full rounded-xl bg-gray-100 py-3 text-left text-lg font-medium text-gray-900 hover:bg-gray-200 hover:text-blue-600 transition-colors"
                 >
                   Features
                 </button>
@@ -221,19 +223,21 @@ const Menubar = () => {
               </SignedOut>
 
               <SignedIn>
-                <Link
-                  to="/dashboard"
-                  onClick={closeMenu}
-                  className="text-lg font-medium text-gray-700 hover:text-blue-600"
+                <button
+                  onClick={() => {
+                    closeMenu();
+                    navigate("/dashboard");
+                  }}
+                  className="w-full rounded-xl bg-blue-600 py-3 text-left text-lg font-semibold text-white shadow-lg hover:bg-blue-700 active:scale-95 transition-all"
                 >
                   Dashboard
-                </Link>
+                </button>
                 <button
                   onClick={() => {
                     handleGenerateClick();
                     closeMenu();
                   }}
-                  className="text-left text-lg font-medium text-gray-700 hover:text-blue-600"
+                  className="w-full rounded-xl bg-gray-900 py-3 text-left text-lg font-semibold text-white shadow-lg hover:bg-gray-800 active:scale-95 transition-all"
                 >
                   Generate Invoice
                 </button>
