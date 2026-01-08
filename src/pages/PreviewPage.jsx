@@ -26,18 +26,18 @@ import { generatePdfFromElement } from "../util/pdfUtils";
 import { useAuth, useUser } from "@clerk/clerk-react";
 
 const PreviewPage = () => {
+  const navigate = useNavigate();
   const previewRef = useRef();
+  const { user } = useUser();
+  const { getToken } = useAuth();
   const { selectedTemplate, setSelectedTemplate, invoiceData, baseURL } =
     useContext(AppContext);
+  const [customerEmail, setCustomerEmail] = useState("");
 
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
   const [downloading, setDownloading] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [customerEmail, setCustomerEmail] = useState("");
   const [sendingEmail, setSendingEmail] = useState(false);
-  const { getToken } = useAuth();
-  const { user } = useUser();
 
   const handleSave = async () => {
     try {
