@@ -77,12 +77,6 @@ const Menubar = () => {
                   Features
                 </button>
                 <button
-                  onClick={() => handleScroll("why-us")}
-                  className="text-sm font-medium text-gray-600 hover:text-blue-600"
-                >
-                  Why Us?
-                </button>
-                <button
                   onClick={() => openSignIn()}
                   className="rounded-full bg-blue-600 px-5 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition-all"
                 >
@@ -213,15 +207,6 @@ const Menubar = () => {
                   className="text-left text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors"
                 >
                   Features
-                </button>
-                <button
-                  onClick={() => {
-                    handleScroll("why-us");
-                    closeMenu();
-                  }}
-                  className="text-left text-lg font-medium text-gray-700 hover:text-blue-600 transition-colors"
-                >
-                  Why Us?
                 </button>
 
                 <button

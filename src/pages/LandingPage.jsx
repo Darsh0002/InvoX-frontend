@@ -1,12 +1,6 @@
 import React from "react";
-import {
-  CheckCircle,
-  Twitter,
-  Linkedin,
-  Facebook,
-} from "lucide-react";
+import { CheckCircle, Twitter, Linkedin, Facebook } from "lucide-react";
 import { SignedIn, SignedOut, useClerk, UserButton } from "@clerk/clerk-react";
-
 
 const LandingPage = () => {
   const { openSignIn } = useClerk();
@@ -36,10 +30,18 @@ const LandingPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={openLogin}
-                className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl hover:shadow-yellow-400/20 transform hover:-translate-y-1">
+                className="bg-yellow-400 text-blue-900 px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-300 transition shadow-xl hover:shadow-yellow-400/20 transform hover:-translate-y-1"
+              >
                 Generate Your First Invoice
               </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition">
+              <button
+                onClick={() =>
+                  document.getElementById("features")?.scrollIntoView({
+                    behavior: "smooth",
+                  })
+                }
+                className="border-2 border-white text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-white/10 transition"
+              >
                 Learn More
               </button>
             </div>
@@ -207,7 +209,10 @@ const LandingPage = () => {
               Join thousands of freelancers and small businesses who trust
               InvoX. Start creating professional invoices today.
             </p>
-            <button className="bg-yellow-400 text-blue-900 px-10 py-5 rounded-full font-bold text-xl hover:bg-yellow-300 transition shadow-2xl hover:shadow-yellow-400/20 transform hover:-translate-y-1">
+            <button
+              onClick={openLogin}
+              className="bg-yellow-400 text-blue-900 px-10 py-5 rounded-full font-bold text-xl hover:bg-yellow-300 transition shadow-2xl hover:shadow-yellow-400/20 transform hover:-translate-y-1"
+            >
               Start Generating Invoices Now
             </button>
           </div>
@@ -224,9 +229,14 @@ const LandingPage = () => {
                 <span className="text-2xl font-bold tracking-tight">InvoX</span>
               </div>
               <div className="flex space-x-6">
-                <SocialIcon Icon={Twitter} />
-                <SocialIcon Icon={Facebook} />
-                <SocialIcon Icon={Linkedin} />
+                <a
+                  href="https://www.linkedin.com/in/darsh-balar-802981279/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-gray-800 rounded-full hover:bg-blue-600 transition duration-300 text-gray-300 hover:text-white"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
               </div>
             </div>
 
@@ -261,12 +271,4 @@ const ListItem = ({ text }) => (
   </li>
 );
 
-const SocialIcon = ({ Icon }) => (
-  <a
-    href="#"
-    className="p-2 bg-gray-800 rounded-full hover:bg-blue-600 transition duration-300 text-gray-300 hover:text-white"
-  >
-    <Icon className="h-5 w-5" />
-  </a>
-);
 export default LandingPage;
