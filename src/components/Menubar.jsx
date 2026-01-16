@@ -92,7 +92,7 @@ const Menubar = () => {
                   onClick={handleGenerateClick}
                   className="rounded-full bg-gray-900 px-5 py-2 text-sm font-semibold text-white hover:bg-gray-800 transition-all"
                 >
-                  Generate
+                  Create Invoice
                 </button>
                 <div className="flex items-center border-l pl-6 ml-2">
                   <UserButton afterSignOutUrl="/" />
@@ -239,7 +239,7 @@ const Menubar = () => {
                   }}
                   className="w-full rounded-xl bg-gray-900 py-3 text-left text-lg font-semibold text-white shadow-lg hover:bg-gray-800 active:scale-95 transition-all"
                 >
-                  Generate Invoice
+                  Create Invoice
                 </button>
 
                 {/* User Profile Section */}

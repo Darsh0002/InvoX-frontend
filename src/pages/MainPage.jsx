@@ -22,13 +22,35 @@ const MainPage = () => {
   };
 
   const handlePreviewClick = () => {
-    const hasInvalidItems = invoiceData.items.some(
-      (item) => !item.name || !item.qty || !item.amount || item.amount<0
-    );
-    if (hasInvalidItems) {
-      toast.error("Enter Valid Item Details");
+    // Validate required fields
+    if (!invoiceData.company.name?.trim()) {
+      toast.error("Company name is required");
       return;
     }
+
+    if (!invoiceData.billing.name?.trim()) {
+      toast.error("Client name is required");
+      return;
+    }
+
+    // Validate items
+    const validItems = invoiceData.items.filter(
+      (item) => item.name?.trim()
+    );
+    if (validItems.length === 0) {
+      toast.error("At least one item is required");
+      return;
+    }
+
+    // Validate item details
+    const hasInvalidItems = validItems.some(
+      (item) => !item.qty || !item.amount || parseFloat(item.qty) <= 0 || parseFloat(item.amount) < 0
+    );
+    if (hasInvalidItems) {
+      toast.error("Enter valid quantity and amount");
+      return;
+    }
+
     navigate("/preview");
   };
 
@@ -72,7 +94,7 @@ const MainPage = () => {
         </div>
 
         {/* Invoice form and template grid */}
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-5">
           {/* Invoice form */}
           <div className="bg-white shadow-lg rounded-xl border border-gray-200 overflow-hidden lg:flex-1">
             <div className="p-4 sm:p-6">
