@@ -102,10 +102,14 @@ const InvoiceForm = () => {
 
   // --- Reusable Styling Classes ---
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
+  const requiredLabelClass =
+    "block text-sm font-medium text-gray-700 mb-1 after:content-['*'] after:text-red-500 after:ml-1";
   const inputClass =
     "w-full px-3 py-2 bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hover:border-gray-400 transition-all duration-200 placeholder-gray-400 shadow-sm";
   const sectionTitleClass =
     "text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 border-b pb-1";
+  const requiredSectionTitleClass =
+    "text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 border-b pb-1 after:content-['*'] after:text-red-500 after:ml-1";
 
   return (
     <div className="space-y-4 sm:space-y-6">
@@ -117,14 +121,18 @@ const InvoiceForm = () => {
           <div className="flex flex-col justify-end">
             <h5 className={sectionTitleClass}>From (Company Info)</h5>
             <div className="space-y-3">
-              <input
-                className={inputClass}
-                onChange={(e) =>
-                  handleChange("company", "name", e.target.value)
-                }
-                value={invoiceData.company.name}
-                placeholder="Company Name"
-              />
+              <div>
+                <label className={requiredLabelClass}>Company Name</label>
+                <input
+                  className={inputClass}
+                  onChange={(e) =>
+                    handleChange("company", "name", e.target.value)
+                  }
+                  value={invoiceData.company.name}
+                  placeholder="Company Name"
+                  required
+                />
+              </div>
               <input
                 className={inputClass}
                 placeholder="Company Phone No"
@@ -132,6 +140,13 @@ const InvoiceForm = () => {
                   handleChange("company", "number", e.target.value)
                 }
                 value={invoiceData.company.number}
+                type="tel"
+                maxLength={10}
+                onKeyDown={(e) => {
+                  if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
+                    e.preventDefault();
+                  }
+                }}
               />
               <input
                 className={inputClass}
@@ -188,7 +203,7 @@ const InvoiceForm = () => {
             <h5 className={sectionTitleClass}>Bill To</h5>
             <div className="space-y-3">
               <div>
-                <label className={labelClass}>Client Name</label>
+                <label className={requiredLabelClass}>Client Name</label>
                 <input
                   className={inputClass}
                   placeholder="Client Name"
@@ -196,6 +211,7 @@ const InvoiceForm = () => {
                   onChange={(e) =>
                     handleChange("billing", "name", e.target.value)
                   }
+                  required
                 />
               </div>
               <div>
@@ -204,6 +220,13 @@ const InvoiceForm = () => {
                   className={inputClass}
                   placeholder="Client Phone No"
                   value={invoiceData.billing.phone}
+                  type="tel"
+                  maxLength={10}
+                  onKeyDown={(e) => {
+                    if (!/[0-9]/.test(e.key) && e.key !== "Backspace") {
+                      e.preventDefault();
+                    }
+                  }}
                   onChange={(e) =>
                     handleChange("billing", "phone", e.target.value)
                   }
@@ -331,7 +354,7 @@ const InvoiceForm = () => {
 
         {/* --- Item Details --- */}
         <div className="mb-6 sm:mb-8">
-          <h5 className={sectionTitleClass}>Item Details</h5>
+          <h5 className={requiredSectionTitleClass}>Item Details</h5>
 
           {/* Table Header (Hidden on Mobile) */}
           <div className="hidden sm:grid grid-cols-12 gap-4 mb-2 text-xs font-medium text-gray-500 uppercase">
