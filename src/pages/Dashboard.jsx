@@ -12,6 +12,7 @@ import {
   Trash2,
   Eye,
   IndianRupee,
+  Edit,
 } from "lucide-react";
 import { initialInvoiceData } from "../constants";
 import { useAuth } from "@clerk/clerk-react";
@@ -76,6 +77,25 @@ const Dashboard = () => {
     } catch (error) {
       toast.error("Failed to delete invoice");
     }
+  };
+
+
+  const handleEdit = (invoice) => {
+    // Merge invoice data with initial structure to ensure all fields exist
+    const mergedInvoice = {
+      ...initialInvoiceData,
+      ...invoice,
+      billing: { ...initialInvoiceData.billing, ...invoice.billing },
+      shipping: { ...initialInvoiceData.shipping, ...invoice.shipping },
+      invoice: { ...initialInvoiceData.invoice, ...invoice.invoice },
+      account: { ...initialInvoiceData.account, ...invoice.account },
+      company: { ...initialInvoiceData.company, ...invoice.company },
+      items: invoice.items || initialInvoiceData.items,
+    };
+    setInvoiceData(mergedInvoice);
+    setInvoiceTitle(invoice.title || "New Invoice");
+    setSelectedTemplate(invoice.templateId || "template1");
+    navigate("/generate");
   };
 
   // Helper: Calculate total amount from items array
@@ -193,6 +213,14 @@ const Dashboard = () => {
                       title="View"
                     >
                       <Eye size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleEdit(inv)}
+                      className="p-2 bg-white text-gray-700 rounded-full hover:bg-blue-600 hover:text-white transition-colors shadow-lg"
+                      title="Edit"
+                    >
+                      {/* <Eye size={18} /> */}
+                      <Edit size={18} />
                     </button>
                     <button
                       onClick={() => handleDelete(inv.id)}
